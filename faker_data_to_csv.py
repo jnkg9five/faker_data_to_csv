@@ -3,7 +3,26 @@
 from faker import Faker
 import csv
 
-def fill_data_csv(data, filename="user_data.csv"):
+def gen_rand_data(fake, size):
+    #generate random data user faker lib
+    name = fake.name() 
+    phone_number = fake.phone_number()
+    email = fake.email()
+    job = fake.job()
+    company = fake.company() 
+    
+    #print("Dataset Index: ", size) Debug print segment
+
+    #print random generated data to output
+    #print("Name: ", name)
+    #print("Phone Number: ", phone_number)
+    #print("Email: ", email)
+    #print("Job: ", job)    
+    #print("Company: ", company)
+
+    return {'Name': name, 'Phone': phone_number, 'Email': email, 'Job': job, 'Company': company} #return these values to be used at sort_key
+
+def fill_data_csv(data, filename):
     #Create specified header
     header = ['Name','Phone','Email','Job','Company']
 
@@ -16,24 +35,19 @@ def fill_data_csv(data, filename="user_data.csv"):
             writer.writeheader()
         writer.writerow(data)
 
-def gen_rand_data(fake, size):
-    #generate random data user faker lib
-    name = fake.name() 
-    phone_number = fake.phone_number()
-    email = fake.email()
-    job = fake.job()
-    company = fake.company() 
-    
-    #print("Dataset Index: ", size)
+def sort_csv(filename, sort_key, reverse=False):
+    with open(filename, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        data = list(reader)
+        
+    #Sort data by the key used sorted method
+    sort_data = sorted(data, key=lambda x: x[sort_key], reverse=reverse)
 
-    #print random generated data to output
-    #print("Name: ", name)
-    #print("Phone Number: ", phone_number)
-    #print("Email: ", email)
-    #print("Job: ", job)    
-    #print("Company: ", company)
-
-    return {'Name': name, 'Phone': phone_number, 'Email': email, 'Job': job, 'Company': company}
+    #Write sorted data to the CSV file
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=reader.fieldnames)
+        writer.writeheader()
+        writer.writerows(sort_data)
 
 def main():
     #make faker instance
@@ -41,10 +55,13 @@ def main():
 
     #take in value of the data set size to store in csv
     set_size = int(input("What is the data set size to be generated? "))
+    name_csv = str(input("Name the output csv file: "))
 
     for size in range(set_size):
         rand_data = gen_rand_data(fake, size)   
-        fill_data_csv(rand_data)
+        fill_data_csv(rand_data, name_csv)
+
+    sort_csv(name_csv, sort_key='Name') #sort alphabetically by name
 
     print("Generated data has been written into user_data.csv with header.")
 
