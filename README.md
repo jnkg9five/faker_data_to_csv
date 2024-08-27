@@ -10,7 +10,7 @@ The following fields are randomly generated.
 - Job Occupation
 - Company Name
 
-- Added feature to sort csv alphabetically by name.
+- Added feature to sort csv alphabetically by chosen.
 - Added feature to allow for naming of output csv file.  
 - You will be prompted for both size of csv data generation and name the csv.
 - Successful run of program will display the following message.  

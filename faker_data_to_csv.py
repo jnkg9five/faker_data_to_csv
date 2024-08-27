@@ -56,14 +56,15 @@ def main():
     #take in value of the data set size to store in csv
     set_size = int(input("What is the data set size to be generated? "))
     name_csv = str(input("Name the output csv file: "))
+    sort_field_name = str(input("Which field of the data do you want to sort. Please choose between Name, Phone, Email, Job, or Company: "))
 
     for size in range(set_size):
         rand_data = gen_rand_data(fake, size)   
         fill_data_csv(rand_data, name_csv)
 
-    sort_csv(name_csv, sort_key='Name') #sort alphabetically by name
+    sort_csv(name_csv, sort_key=sort_field_name) #sort by field chosen in prompt
 
-    print("Generated data has been written into user_data.csv with header.")
+    print("Generated data has been written into user_data.csv with header and sorted by "+sort_field_name+".")
 
 if __name__ == "__main__":
     main()    
